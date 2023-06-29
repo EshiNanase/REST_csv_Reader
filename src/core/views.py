@@ -1,5 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.views.decorators.cache import cache_page
 from collections import defaultdict
 from drf_spectacular.utils import extend_schema
 from .serializers import DealSerializer, CustomerSerializer
@@ -41,6 +42,7 @@ def upload_deal(request):
         )
 
 
+@cache_page(30)
 @api_view(['GET'])
 def get_top_five_customers(request):
     customers = Customer.objects.prefetch_related('stones', 'stones__stone').all().order_by('-spent_money')[:5]

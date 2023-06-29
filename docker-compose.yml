@@ -4,7 +4,7 @@ services:
   app:
     build: .
     command: sh -c "poetry run python3 manage.py migrate &&
-                    poetry run python3 manage.py runserver 0.0.0.0:8000"
+                    poetry run gunicorn config.wsgi -b 0.0.0.0:8000 -w 4"
     volumes:
       - ./src:/code/src/
     depends_on:
